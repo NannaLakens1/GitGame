@@ -56,13 +56,13 @@ jobs:
         dotnet-version: ${{env.DOTNET_CORE_VERSION}}
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./GameBackend
       
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build ./GameBackend --no-restore
     
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ./GameBackend --no-build --verbosity normal
     
     - name: Publish
       run: dotnet publish ./${{ secrets.WEBAPI_PROJECT_FOLDER }} --output ${{env.PUBLISH_DIRECTORY}} --configuration Release 
