@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../GameBackend.Tests/GameBackend.Tests.csproj" Id="442e902a-7b5f-40e3-b799-5ec71c5f6d98" />
+  <Project Path="GameBackend.csproj" />
+</Solution>

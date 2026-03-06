@@ -1,0 +1,7 @@
+@GameBackend_HostAddress = http://localhost:5222
+
+GET {{GameBackend_HostAddress}}
+Accept: application/json
+
+###
+// kan ik hier gewoon iets anders van maken of?
