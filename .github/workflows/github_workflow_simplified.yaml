@@ -6,11 +6,11 @@ env: # Change these settings if you like
   PUBLISH_DIRECTORY: "./out/publish"
 on:
 #  Uncomment the following lines to enable automatic deployment on push to main, deployment, or master branches
-#  push:
-#    branches:
-#      - main
-#      - deployment
-#      - master 
+  push:
+    branches:
+      - main
+      - deployment
+      - master 
 
   # Allows you to run this workflow manually from the Actions tab.
   workflow_dispatch:
@@ -56,13 +56,13 @@ jobs:
         dotnet-version: ${{env.DOTNET_CORE_VERSION}}
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./GameBackend
       
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build ./GameBackend --no-restore
     
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ./GameBackend --no-build --verbosity normal
     
     - name: Publish
       run: dotnet publish ./${{ secrets.WEBAPI_PROJECT_FOLDER }} --output ${{env.PUBLISH_DIRECTORY}} --configuration Release 
