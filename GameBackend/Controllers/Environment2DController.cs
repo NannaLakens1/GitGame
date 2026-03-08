@@ -18,6 +18,7 @@ namespace GameBackend.Controllers
             this._environment2DRepository = environment2DRepository;
             this._authenticationService = authenticationService;
         }
+        //test voor commit en push
 
         [HttpGet(Name = "GetEnvironment2D")] //name= "pad"?? is dit dan nu wel of niet wat achter de / komt?
         public async Task<ActionResult<List<Environment2D>>> GetAsync()
