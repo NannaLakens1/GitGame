@@ -1,4 +1,4 @@
-﻿/*using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
 using GameBackend.Controllers;
 using GameBackend.Services;
@@ -8,32 +8,132 @@ using GameBackend.Models;
 namespace GameBackend.Tests
 {
     [TestClass]
-    public sealed class Environment2DControllerTest
+    public sealed class Environment2DTests
     {
-        private Environment2DController controller;
-        private Mock<IEnvironment2DRepository> environment2dRepository;
+        private Environment2DController environment2DController;
+        private Mock<IEnvironment2DRepository> environment2DRepository;
+        private Mock<IAuthenticationService> authenticationService;
+        private Object2DController Object2DController;
+        private Mock<IObject2DRepository> object2DRepository;
 
         [TestInitialize]
         public void Setup()
         {
-            environment2dRepository = new Mock<IEnvironment2DRepository>();
-            controller = new Environment2DController(environment2dRepository.Object);
+            environment2DRepository = new Mock<IEnvironment2DRepository>();
+            authenticationService = new Mock<IAuthenticationService>();
+
+            environment2DController = new Environment2DController(environment2DRepository.Object, authenticationService.Object);
         }
 
         [TestMethod]
-        public async Task Get_ExampleObjectThatDoesNotExist_Returns404NotFound()
+        public async Task AddEnvironment_NameEmpty_ReturnsBadRequest()
+        {
+            // arrange
+            authenticationService.Setup(x => x.GetCurrentAuthenticatedUserId()).Returns("5trdxcvhHGyt7gGvjbbn");
+
+            var env = new Environment2D
+            {
+                Name = ""
+            };
+
+            // act
+            var result = await environment2DController.AddAsync(env);
+
+            // result
+            Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
+
+            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Environment2D>()), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task AddEnvironment_ValidInput_UserLoggedIn_WorldCreated()
         {
             // Arrange
-            Guid id = Guid.NewGuid();
+            authenticationService.Setup(x => x.GetCurrentAuthenticatedUserId()).Returns("Vhgfhb&%RTYHvbhu77*&TTYH");
 
-            environment2dRepository.Setup(x => x.SelectAsync(id)).ReturnsAsync(null as Environment2D);
+            var env = new Environment2D
+            {
+                Name = "NewWorld"
+            };
 
             // Act
-            var response = await controller.GetByIdAsync(id);
+            var result = await environment2DController.AddAsync(env);
 
             // Assert
-            Assert.IsInstanceOfType<NotFoundObjectResult>(response.Result);
+            Assert.IsInstanceOfType(result.Result, typeof(OkObjectResult));
+
+            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Environment2D>()), Times.Once);
+        }
+        [TestMethod]
+        public async Task AddEnvironment_UserNotLoggedIn_ReturnsBadRequest()
+        {
+            // Arrange
+            authenticationService.Setup(x => x.GetCurrentAuthenticatedUserId()).Returns((string?)null);
+
+            var env = new Environment2D
+            {
+                Name = "NewWorld"
+            };
+
+            // Act
+            var result = await environment2DController.AddAsync(env);
+
+            // Assert
+            Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
+
+            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Environment2D>()), Times.Never);
+        }
+        public async Task AddEnvironment_Already5Environments_ReturnsBadRequest()
+        {
+            // Arrange
+            authenticationService.Setup(x => x.GetCurrentAuthenticatedUserId()).Returns("vfrt5tGFghg7tyhgh");
+
+            environment2DRepository.Setup(r => r.SelectAsyncByUserId("vfrt5tGFghg7tyhgh")).ReturnsAsync(new List<Environment2D>
+            {
+                new Environment2D(),
+                new Environment2D(),
+                new Environment2D(),
+                new Environment2D(),
+                new Environment2D()
+            });
+
+            var env = new Environment2D
+            {
+                Name = "NewWorld"
+            };
+
+            // Act
+            var result = await environment2DController.AddAsync(env);
+
+            // Assert
+            Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
+
+            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Environment2D>()), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task AddEnvironment_DuplicateName_ReturnsBadRequest()
+        {
+            // Arrange
+            authenticationService.Setup(x => x.GetCurrentAuthenticatedUserId()).Returns("vfrt5tGFghg7tyhgh");
+
+            environment2DRepository.Setup(r => r.SelectAsyncByUserId("vfrt5tGFghg7tyhgh")).ReturnsAsync(new List<Environment2D>
+            {
+                new Environment2D { Name = "ExistingWorld" }
+            });
+
+            var env = new Environment2D
+            {
+                Name = "ExistingWorld"
+            };
+
+            // Act
+            var result = await environment2DController.AddAsync(env);
+
+            // Assert
+            Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
+
+            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Environment2D>()), Times.Never);
         }
     }
 }
-*/

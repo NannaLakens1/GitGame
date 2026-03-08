@@ -55,6 +55,18 @@ namespace GameBackend.Controllers
             {
                 return BadRequest("You must be logged in to create an environment.");
             }
+
+            var userEnvironments = await _environment2DRepository.SelectAsyncByUserId(environment2D.UserId);
+
+            if (userEnvironments.Count() >= 5)
+            {
+                return BadRequest("You cannot have more than 5 environments.");
+            }
+
+            if (userEnvironments.Any(e => e.Name == environment2D.Name))
+            {
+                return BadRequest("An environment with this name already exists.");
+            }
             //methode om te checken dat er niet meer dan 5 werelden worden aangemaakt
 
             await _environment2DRepository.InsertAsync(environment2D);
