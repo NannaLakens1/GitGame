@@ -18,7 +18,7 @@ namespace GameBackend.Repositories
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
-                await sqlConnection.ExecuteAsync("INSERT INTO [Patient] (Id, Name, UserId) VALUES (@Id, @Name, @UserId)", environment);
+                await sqlConnection.ExecuteAsync("INSERT INTO [Patient] (Id, Name, UserId) VALUES (@Id, @Name, @UserId)", patient);
             }
         }
 
