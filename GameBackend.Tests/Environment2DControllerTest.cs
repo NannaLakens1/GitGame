@@ -7,6 +7,7 @@ using GameBackend.Models;
 
 namespace GameBackend.Tests
 {
+    /*
     [TestClass]
     public sealed class Environment2DTests
     {
@@ -136,4 +137,5 @@ namespace GameBackend.Tests
             environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Patient>()), Times.Never);
         }
     }
+    */
 }

@@ -9,15 +9,11 @@ namespace GameBackend.Models
         public Guid PatientId { get; set; }
 
         [Required]
-        public string? PrefabId { get; set; }
+        public string? Type { get; set; }
         [Required]
-        public float PositionX { get; set; }
+        public string? Arts { get; set; }
         [Required]
-        public float PositionY { get; set; }
-        public float ScaleX { get; set; }
-        public float ScaleY { get; set; }
-        public float RotationZ { get; set; }
-        public int SortingLayer { get; set; }
-
+        public DateTime? Datum { get; set; }
+        public string? Locatie { get; set; }
     }
 }

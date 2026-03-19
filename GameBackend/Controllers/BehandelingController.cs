@@ -7,7 +7,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace GameBackend.Controllers
 {
     [ApiController]
-    [Route("environment2d/{environmentId}/object2d")]
+    [Route("[controller]")]
+    //[Route("environment2d/{environmentId}/object2d")]
     public class BehandelingController : ControllerBase
     {
         private readonly IBehandelingRepository _behandelingRepository;
@@ -37,38 +38,6 @@ namespace GameBackend.Controllers
             await _behandelingRepository.InsertAsync(behandeling);
 
             return CreatedAtAction(nameof(GetByPatient), new { patientId }, behandeling);
-            //return CreatedAtRoute("GetObject2DById", new { object2DId = object2D.Id }, object2D);
-        }
-
-        [HttpPut("{object2DId}", Name = "UpdateObject2D")]
-        public async Task<ActionResult<Behandeling>> UpdateAsync(Guid patientId, Guid behandelingId, Behandeling behandeling)
-        {
-            var existingBehandeling = await _behandelingRepository.SelectAsync(behandelingId, patientId);
-
-            if (existingBehandeling == null)
-                return NotFound(new ProblemDetails { Detail = $"Object2D {behandelingId} not found" });
-
-            if (behandeling.Id != behandelingId)
-                return Conflict(new ProblemDetails { Detail = "The id of the Object2D in the route does not match the id of the Object2D in the body" });
-
-            behandeling.PatientId = patientId;
-
-            await _behandelingRepository.UpdateAsync(behandeling);
-
-            return Ok(behandeling);
-        }
-
-        [HttpDelete("{object2DId}", Name = "DeleteObject2D")]
-        public async Task<ActionResult> DeleteAsync(Guid patientId, Guid behandelingId)
-        {
-            var behandeling = await _behandelingRepository.SelectAsync(behandelingId, patientId);
-
-            if (behandeling == null)
-                return NotFound(new ProblemDetails { Detail = $"Object2D {behandelingId} not found" });
-
-            await _behandelingRepository.DeleteAsync(behandelingId, patientId);
-
-            return Ok();
         }
     }
 }
