@@ -6,7 +6,7 @@ namespace GameBackend.Models
     {
         public Guid Id { get; set; }
         //[Required]
-        public Guid EnvironmentId { get; set; }
+        public Guid PatientId { get; set; }
 
         [Required]
         public string? PrefabId { get; set; }

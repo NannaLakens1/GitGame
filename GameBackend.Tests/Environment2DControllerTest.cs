@@ -10,7 +10,7 @@ namespace GameBackend.Tests
     [TestClass]
     public sealed class Environment2DTests
     {
-        private Environment2DController environment2DController;
+        private PatientController environment2DController;
         private Mock<IPatientRepository> environment2DRepository;
         private Mock<IAuthenticationService> authenticationService;
         //private Object2DController Object2DController;
@@ -22,7 +22,7 @@ namespace GameBackend.Tests
             environment2DRepository = new Mock<IPatientRepository>();
             authenticationService = new Mock<IAuthenticationService>();
 
-            environment2DController = new Environment2DController(environment2DRepository.Object, authenticationService.Object);
+            environment2DController = new PatientController(environment2DRepository.Object, authenticationService.Object);
         }
 
         [TestMethod]
