@@ -12,12 +12,6 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-//wat ik eerst had ipv van wat er nu onder staat:
-/*var sqlConnectionString = builder.Configuration.GetValue<string>("SqlConnectionString");
-if (string.IsNullOrWhiteSpace(sqlConnectionString))
-{
-    throw new InvalidProgramException("Configuration variable SqlConnectionString not found.");
-}*/
 
 // Retrieve the SQL connection string from configuration.
 var sqlConnectionString = builder.Configuration.GetValue<string>("SqlConnectionString");
@@ -62,8 +56,8 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IAuthenticationService, AspNetIdentityAuthenticationService>();
 
-builder.Services.AddTransient<IEnvironment2DRepository, Environment2DRepository>(o => new Environment2DRepository(sqlConnectionString!));
-builder.Services.AddTransient<IObject2DRepository, Object2DRepository>(o => new Object2DRepository(sqlConnectionString!));
+builder.Services.AddTransient<IPatientRepository, PatientRepository>(o => new PatientRepository(sqlConnectionString!));
+builder.Services.AddTransient<IBehandelingRepository, BehandelingRepository>(o => new BehandelingRepository(sqlConnectionString!));
 
 //Deze weggehaald en nu doet hij het wel??
 //builder.Services.AddTransient<IEnvironment2DRepository, Environment2DRepository>();

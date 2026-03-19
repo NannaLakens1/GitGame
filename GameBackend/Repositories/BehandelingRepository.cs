@@ -5,30 +5,29 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GameBackend.Repositories
 {
-    public class Object2DRepository : IObject2DRepository
+    public class BehandelingRepository : IBehandelingRepository
     {
         private readonly string sqlConnectionString;
 
-        public Object2DRepository(string sqlConnectionString)
+        public BehandelingRepository(string sqlConnectionString)
         {
             this.sqlConnectionString = sqlConnectionString;
         }
-        public async Task<IEnumerable<Object2D>> SelectByEnvironmentAsync(Guid environmentId)
+        public async Task<IEnumerable<Behandeling>> SelectByPatientAsync(Guid patientId)
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
-                return await sqlConnection.QueryAsync<Object2D>("SELECT * FROM [Object2D] WHERE EnvironmentId = @EnvironmentId", new { EnvironmentId = environmentId });
-                //return await sqlConnection.QueryAsync<Object2D>("SELECT * FROM [Object2D] WHERE Environment2D.Id = @Environment2DId", environmentId);
+                return await sqlConnection.QueryAsync<Behandeling>("SELECT * FROM [Behandeling] WHERE PatientId = @PatientId", new { PatientId = patientId });
             }
         }
-        public async Task<Object2D?> SelectAsync(Guid id, Guid environmentId)
+        public async Task<Behandeling?> SelectAsync(Guid id, Guid patientId)
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
-                return await sqlConnection.QuerySingleOrDefaultAsync<Object2D>("SELECT * FROM [Object2D] WHERE Id = @Id AND EnvironmentId = @EnvironmentId", new { Id = id, EnvironmentId = environmentId });
+                return await sqlConnection.QuerySingleOrDefaultAsync<Behandeling>("SELECT * FROM [Behandeling] WHERE Id = @Id AND PatientId = @PatientId", new { Id = id, PatientId = patientId });
             }
         }
-        public async Task InsertAsync(Object2D object2D)
+        public async Task InsertAsync(Behandeling behandeling)
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
@@ -36,10 +35,10 @@ namespace GameBackend.Repositories
                                                     (Id, EnvironmentId, PrefabId, PositionX, PositionY, ScaleX, ScaleY, RotationZ, SortingLayer) 
                                                     VALUES 
                                                     (@Id, @EnvironmentId, @PrefabId, @PositionX, @PositionY, @ScaleX, @ScaleY, @RotationZ, @SortingLayer)", 
-                                                    object2D);
+                                                    behandeling);
             }
         }
-        public async Task UpdateAsync(Object2D object2D)
+        public async Task UpdateAsync(Behandeling behandeling)
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
@@ -54,14 +53,14 @@ namespace GameBackend.Repositories
                     SortingLayer = @SortingLayer
                     WHERE Id = @Id
                     AND EnvironmentId = @EnvironmentId",
-                    object2D);
+                    behandeling);
             }
         }
-        public async Task DeleteAsync(Guid id, Guid environmentId)
+        public async Task DeleteAsync(Guid id, Guid patientId)
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
-                await sqlConnection.ExecuteAsync("DELETE FROM [Object2D] WHERE Id = @Id AND EnvironmentId = @EnvironmentId", new { Id = id, EnvironmentId = environmentId });
+                await sqlConnection.ExecuteAsync("DELETE FROM [Behandeling] WHERE Id = @Id AND PatientId = @PatientId", new { Id = id, PatientId = patientId });
                 //await sqlConnection.ExecuteAsync("DELETE FROM [Object2D] WHERE Id = @Id", new { id }); //waarom new id?
             }
         }

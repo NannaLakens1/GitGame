@@ -10,18 +10,17 @@ namespace GameBackend.Controllers
     [Route("[controller]")] //dat de url dus environment2d wordt
     public class Environment2DController : ControllerBase
     {
-        private readonly IEnvironment2DRepository _environment2DRepository;
+        private readonly IPatientRepository _environment2DRepository;
         private readonly IAuthenticationService _authenticationService;
 
-        public Environment2DController(IEnvironment2DRepository environment2DRepository, IAuthenticationService authenticationService)
+        public Environment2DController(IPatientRepository environment2DRepository, IAuthenticationService authenticationService)
         {
             this._environment2DRepository = environment2DRepository;
             this._authenticationService = authenticationService;
         }
-        //test voor commit en push
 
-        [HttpGet(Name = "GetEnvironment2D")] //name= "pad"?? is dit dan nu wel of niet wat achter de / komt?
-        public async Task<ActionResult<List<Environment2D>>> GetAsync()
+        [HttpGet(Name = "GetEnvironment2D")]
+        public async Task<ActionResult<List<Patient>>> GetAsync()
         {
             var userId = _authenticationService.GetCurrentAuthenticatedUserId();
             var userEnvironments = await _environment2DRepository.SelectAsyncByUserId(userId);
@@ -43,7 +42,7 @@ namespace GameBackend.Controllers
         
 
         [HttpPost(Name = "AddEnvironment2D")]
-        public async Task<ActionResult<Environment2D>> AddAsync(Environment2D environment2D)
+        public async Task<ActionResult<Patient>> AddAsync(Patient environment2D)
         {
             if (string.IsNullOrWhiteSpace(environment2D.Name) || environment2D.Name.Length > 25)
             {
@@ -68,7 +67,6 @@ namespace GameBackend.Controllers
             {
                 return BadRequest("An environment with this name already exists.");
             }
-            //methode om te checken dat er niet meer dan 5 werelden worden aangemaakt
 
             await _environment2DRepository.InsertAsync(environment2D);
 
@@ -77,7 +75,7 @@ namespace GameBackend.Controllers
         }
 
         [HttpPut("{environment2DId}", Name = "UpdateEnvironment2D")]
-        public async Task<ActionResult<Environment2D>> UpdateAsync(Guid environment2DId, Environment2D environment2D)
+        public async Task<ActionResult<Patient>> UpdateAsync(Guid environment2DId, Patient environment2D)
         {
             var userId = _authenticationService.GetCurrentAuthenticatedUserId();
             var existingEnvironment2D = await _environment2DRepository.SelectAsync(environment2DId);

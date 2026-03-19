@@ -10,10 +10,10 @@ namespace GameBackend.Controllers
     [Route("environment2d/{environmentId}/object2d")]
     public class Object2DController : ControllerBase
     {
-        private readonly IObject2DRepository _object2DRepository;
+        private readonly IBehandelingRepository _object2DRepository;
         private readonly IAuthenticationService _authenticationService;
 
-        public Object2DController(IObject2DRepository object2DRepository, IAuthenticationService authenticationService)
+        public Object2DController(IBehandelingRepository object2DRepository, IAuthenticationService authenticationService)
         {
             this._object2DRepository = object2DRepository;
             this._authenticationService = authenticationService;
@@ -28,7 +28,7 @@ namespace GameBackend.Controllers
         }
 
         [HttpPost(Name = "AddObject2D")]
-        public async Task<ActionResult<Object2D>> AddAsync(Guid environmentId, Object2D object2D)
+        public async Task<ActionResult<Behandeling>> AddAsync(Guid environmentId, Behandeling object2D)
         {
             object2D.Id = Guid.NewGuid();
             object2D.EnvironmentId = environmentId;
@@ -41,10 +41,9 @@ namespace GameBackend.Controllers
         }
 
         [HttpPut("{object2DId}", Name = "UpdateObject2D")]
-        public async Task<ActionResult<Object2D>> UpdateAsync(Guid environmentId, Guid object2DId, Object2D object2D)
+        public async Task<ActionResult<Behandeling>> UpdateAsync(Guid environmentId, Guid object2DId, Behandeling object2D)
         {
             var existingObject2D = await _object2DRepository.SelectAsync(object2DId, environmentId);
-            //var existingObject2D = await _object2DRepository.SelectAsync(object2DId);
 
             if (existingObject2D == null)
                 return NotFound(new ProblemDetails { Detail = $"Object2D {object2DId} not found" });
@@ -63,7 +62,6 @@ namespace GameBackend.Controllers
         public async Task<ActionResult> DeleteAsync(Guid environmentId, Guid object2DId)
         {
             var object2D = await _object2DRepository.SelectAsync(object2DId, environmentId);
-            //var object2D = await _object2DRepository.SelectAsync(object2DId);
 
             if (object2D == null)
                 return NotFound(new ProblemDetails { Detail = $"Object2D {object2DId} not found" });

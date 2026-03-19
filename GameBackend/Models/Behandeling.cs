@@ -2,7 +2,7 @@
 
 namespace GameBackend.Models
 {
-    public class Object2D
+    public class Behandeling
     {
         public Guid Id { get; set; }
         //[Required]

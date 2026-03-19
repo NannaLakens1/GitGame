@@ -2,7 +2,7 @@
 
 namespace GameBackend.Models
 {
-    public class Environment2D
+    public class Patient
     {
         public Guid Id { get; set; }
 

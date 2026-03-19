@@ -11,15 +11,15 @@ namespace GameBackend.Tests
     public sealed class Environment2DTests
     {
         private Environment2DController environment2DController;
-        private Mock<IEnvironment2DRepository> environment2DRepository;
+        private Mock<IPatientRepository> environment2DRepository;
         private Mock<IAuthenticationService> authenticationService;
-        private Object2DController Object2DController;
-        private Mock<IObject2DRepository> object2DRepository;
+        //private Object2DController Object2DController;
+        //private Mock<IObject2DRepository> object2DRepository;
 
         [TestInitialize]
         public void Setup()
         {
-            environment2DRepository = new Mock<IEnvironment2DRepository>();
+            environment2DRepository = new Mock<IPatientRepository>();
             authenticationService = new Mock<IAuthenticationService>();
 
             environment2DController = new Environment2DController(environment2DRepository.Object, authenticationService.Object);
@@ -31,7 +31,7 @@ namespace GameBackend.Tests
             // arrange
             authenticationService.Setup(x => x.GetCurrentAuthenticatedUserId()).Returns("5trdxcvhHGyt7gGvjbbn");
 
-            var env = new Environment2D
+            var env = new Patient
             {
                 Name = ""
             };
@@ -42,7 +42,7 @@ namespace GameBackend.Tests
             // result
             Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
 
-            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Environment2D>()), Times.Never);
+            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Patient>()), Times.Never);
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace GameBackend.Tests
             // Arrange
             authenticationService.Setup(x => x.GetCurrentAuthenticatedUserId()).Returns("Vhgfhb&%RTYHvbhu77*&TTYH");
 
-            var env = new Environment2D
+            var env = new Patient
             {
                 Name = "NewWorld"
             };
@@ -62,7 +62,7 @@ namespace GameBackend.Tests
             // Assert
             Assert.IsInstanceOfType(result.Result, typeof(OkObjectResult));
 
-            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Environment2D>()), Times.Once);
+            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Patient>()), Times.Once);
         }
         [TestMethod]
         public async Task AddEnvironment_UserNotLoggedIn_ReturnsBadRequest()
@@ -70,7 +70,7 @@ namespace GameBackend.Tests
             // Arrange
             authenticationService.Setup(x => x.GetCurrentAuthenticatedUserId()).Returns((string?)null);
 
-            var env = new Environment2D
+            var env = new Patient
             {
                 Name = "NewWorld"
             };
@@ -81,23 +81,23 @@ namespace GameBackend.Tests
             // Assert
             Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
 
-            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Environment2D>()), Times.Never);
+            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Patient>()), Times.Never);
         }
         public async Task AddEnvironment_Already5Environments_ReturnsBadRequest()
         {
             // Arrange
             authenticationService.Setup(x => x.GetCurrentAuthenticatedUserId()).Returns("vfrt5tGFghg7tyhgh");
 
-            environment2DRepository.Setup(r => r.SelectAsyncByUserId("vfrt5tGFghg7tyhgh")).ReturnsAsync(new List<Environment2D>
+            environment2DRepository.Setup(r => r.SelectAsyncByUserId("vfrt5tGFghg7tyhgh")).ReturnsAsync(new List<Patient>
             {
-                new Environment2D(),
-                new Environment2D(),
-                new Environment2D(),
-                new Environment2D(),
-                new Environment2D()
+                new Patient(),
+                new Patient(),
+                new Patient(),
+                new Patient(),
+                new Patient()
             });
 
-            var env = new Environment2D
+            var env = new Patient
             {
                 Name = "NewWorld"
             };
@@ -108,7 +108,7 @@ namespace GameBackend.Tests
             // Assert
             Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
 
-            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Environment2D>()), Times.Never);
+            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Patient>()), Times.Never);
         }
 
         [TestMethod]
@@ -117,12 +117,12 @@ namespace GameBackend.Tests
             // Arrange
             authenticationService.Setup(x => x.GetCurrentAuthenticatedUserId()).Returns("vfrt5tGFghg7tyhgh");
 
-            environment2DRepository.Setup(r => r.SelectAsyncByUserId("vfrt5tGFghg7tyhgh")).ReturnsAsync(new List<Environment2D>
+            environment2DRepository.Setup(r => r.SelectAsyncByUserId("vfrt5tGFghg7tyhgh")).ReturnsAsync(new List<Patient>
             {
-                new Environment2D { Name = "ExistingWorld" }
+                new Patient { Name = "ExistingWorld" }
             });
 
-            var env = new Environment2D
+            var env = new Patient
             {
                 Name = "ExistingWorld"
             };
@@ -133,7 +133,7 @@ namespace GameBackend.Tests
             // Assert
             Assert.IsInstanceOfType(result.Result, typeof(BadRequestObjectResult));
 
-            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Environment2D>()), Times.Never);
+            environment2DRepository.Verify(r => r.InsertAsync(It.IsAny<Patient>()), Times.Never);
         }
     }
 }
