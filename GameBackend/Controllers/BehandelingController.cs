@@ -7,7 +7,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace GameBackend.Controllers
 {
     [ApiController]
-    [Route("environment2d/{environmentId}/object2d")]
+    [Route("[controller]")]
+    //[Route("environment2d/{environmentId}/object2d")]
     public class BehandelingController : ControllerBase
     {
         private readonly IBehandelingRepository _behandelingRepository;
