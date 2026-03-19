@@ -38,31 +38,5 @@ namespace GameBackend.Repositories
                                                     behandeling);
             }
         }
-        public async Task UpdateAsync(Behandeling behandeling)
-        {
-            using (var sqlConnection = new SqlConnection(sqlConnectionString))
-            {
-                await sqlConnection.ExecuteAsync(
-                    @"UPDATE [Object2D] SET
-                    PrefabId = @PrefabId,
-                    PositionX = @PositionX,
-                    PositionY = @PositionY,
-                    ScaleX = @ScaleX,
-                    ScaleY = @ScaleY,
-                    RotationZ = @RotationZ,
-                    SortingLayer = @SortingLayer
-                    WHERE Id = @Id
-                    AND EnvironmentId = @EnvironmentId",
-                    behandeling);
-            }
-        }
-        public async Task DeleteAsync(Guid id, Guid patientId)
-        {
-            using (var sqlConnection = new SqlConnection(sqlConnectionString))
-            {
-                await sqlConnection.ExecuteAsync("DELETE FROM [Behandeling] WHERE Id = @Id AND PatientId = @PatientId", new { Id = id, PatientId = patientId });
-                //await sqlConnection.ExecuteAsync("DELETE FROM [Object2D] WHERE Id = @Id", new { id }); //waarom new id?
-            }
-        }
     }
 }
