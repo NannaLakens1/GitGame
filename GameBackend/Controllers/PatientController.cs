@@ -23,6 +23,12 @@ namespace GameBackend.Controllers
         public async Task<ActionResult<List<Patient>>> GetAsync()
         {
             var userId = _authenticationService.GetCurrentAuthenticatedUserId();
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
             var userPatients = await _patientRepository.SelectAsyncByUserId(userId);
             return Ok(userPatients);
         }
@@ -32,7 +38,7 @@ namespace GameBackend.Controllers
         {
             if (string.IsNullOrWhiteSpace(patient.Name) || patient.Name.Length > 25)
             {
-                return BadRequest("Environment name must be in between 1 or 25 karakters");
+                return BadRequest("Patient name must be in between 1 or 25 karakters");
             }
 
             patient.Id = Guid.NewGuid();

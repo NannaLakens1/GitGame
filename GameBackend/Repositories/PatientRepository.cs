@@ -17,10 +17,11 @@ namespace GameBackend.Repositories
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
-                await sqlConnection.ExecuteAsync("INSERT INTO [Patient] (Id, Name, UserId) VALUES (@Id, @Name, @UserId)", patient);
+                await sqlConnection.ExecuteAsync("INSERT INTO [Patient] (Id, Name, Age, UserId) VALUES (@Id, @Name, @Age, @UserId)", patient);
             }
         }
 
+        //een patient ophalen met de userId van de ouder (=authenticated user)
         public async Task<IEnumerable<Patient>> SelectAsyncByUserId(string userId)
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
@@ -29,6 +30,7 @@ namespace GameBackend.Repositories
             }
         }
 
+        //een patient ophalen met de Id van de patient zelf
         public async Task<Patient?> SelectAsync(Guid id)
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
