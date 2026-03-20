@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GameBackend.Controllers
 {
     [ApiController]
-    [Route("[controller]")] //dat de url dus environment2d wordt
+    [Route("[controller]")]
     public class PatientController : ControllerBase
     {
         private readonly IPatientRepository _patientRepository;
@@ -47,8 +47,6 @@ namespace GameBackend.Controllers
             {
                 return BadRequest("You must be logged in to create an environment.");
             }
-
-            var userPatients = await _patientRepository.SelectAsyncByUserId(patient.UserId);
 
             await _patientRepository.InsertAsync(patient);
 

@@ -31,10 +31,10 @@ namespace GameBackend.Repositories
         {
             using (var sqlConnection = new SqlConnection(sqlConnectionString))
             {
-                await sqlConnection.ExecuteAsync(@"INSERT INTO [Object2D] 
-                                                    (Id, EnvironmentId, PrefabId, PositionX, PositionY, ScaleX, ScaleY, RotationZ, SortingLayer) 
+                await sqlConnection.ExecuteAsync(@"INSERT INTO [Behandeling] 
+                                                    (Id, PatientId, Type, Arts, Datum, Locatie) 
                                                     VALUES 
-                                                    (@Id, @EnvironmentId, @PrefabId, @PositionX, @PositionY, @ScaleX, @ScaleY, @RotationZ, @SortingLayer)", 
+                                                    (@Id, @PatientId, @Type, @Arts, @Datum, @Locatie)",
                                                     behandeling);
             }
         }
