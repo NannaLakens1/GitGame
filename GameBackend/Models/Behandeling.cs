@@ -8,11 +8,8 @@ namespace GameBackend.Models
         //[Required]
         public Guid PatientId { get; set; }
 
-        [Required]
         public string? Type { get; set; }
-        [Required]
         public string? Arts { get; set; }
-        [Required]
         public DateTime? Datum { get; set; }
         public string? Locatie { get; set; }
     }

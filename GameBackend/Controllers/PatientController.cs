@@ -36,16 +36,16 @@ namespace GameBackend.Controllers
         [HttpPost(Name = "AddPatient")]
         public async Task<ActionResult<Patient>> AddAsync(Patient patient)
         {
-            if (string.IsNullOrWhiteSpace(patient.Name) || patient.Name.Length > 25)
+            if (string.IsNullOrWhiteSpace(patient.Name))
             {
-                return BadRequest("Patient name must be in between 1 or 25 karakters");
+                return BadRequest("Patient name is required");
             }
 
             patient.Id = Guid.NewGuid();
             patient.UserId = _authenticationService.GetCurrentAuthenticatedUserId();
             if (string.IsNullOrWhiteSpace(patient.UserId))
             {
-                return BadRequest("You must be logged in to create an environment.");
+                return BadRequest("You must be logged in to create a patient.");
             }
 
             await _patientRepository.InsertAsync(patient);
